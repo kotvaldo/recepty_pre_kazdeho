@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "c65257ec2c9dacb6fcd821d2a06f2dcc",
+    "content-hash": "49034e423c77eec298cd70ae6efb8a23",
     "packages": [
         {
             "name": "barryvdh/laravel-debugbar",
@@ -1128,6 +1128,91 @@
                 }
             ],
             "time": "2023-12-03T19:50:20+00:00"
+        },
+        {
+            "name": "hrkut/datagrid",
+            "version": "2.0.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/hrkut/datagrid.git",
+                "reference": "601c7fdbe3a51796911f9447067b4f8d688443be"
+            },
+            "require": {
+                "laravel/framework": ">9.0",
+                "php": ">8.0"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Aginev\\Datagrid\\DatagridServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Aginev\\Datagrid\\": "src"
+                }
+            },
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Atanas Ginev",
+                    "email": "me@aginev.com"
+                }
+            ],
+            "description": "Datagrid Package for Laravel v5+",
+            "homepage": "http://aginev.com",
+            "keywords": [
+                "Datagrid",
+                "Datagrid Package for Laravel"
+            ],
+            "time": "2023-12-06T11:08:44+00:00"
+        },
+        {
+            "name": "hrkut/search-filters",
+            "version": "1.0.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/hrkut/search-filters.git",
+                "reference": "74d418c16dc01c017a39510463ad0b6e6629f145"
+            },
+            "require": {
+                "laravel/framework": "^10.0",
+                "php": "^8.0"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Aginev\\Datagrid\\DatagridServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Aginev\\SearchFilters\\": "src"
+                }
+            },
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Atanas Ginev",
+                    "email": "me@aginev.com"
+                }
+            ],
+            "description": "Easily apply search criteria on Laravel 5+ queries",
+            "homepage": "http://aginev.com",
+            "keywords": [
+                "Laravel search filters",
+                "search criteria on Laravel queries",
+                "search filters"
+            ],
+            "time": "2023-12-06T11:00:36+00:00"
         },
         {
             "name": "laravel/framework",
@@ -8365,7 +8450,7 @@
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": [],
-    "prefer-stable": true,
+    "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
         "php": "^8.1"
