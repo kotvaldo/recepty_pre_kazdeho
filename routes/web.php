@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\UserController;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -15,15 +16,17 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('home');
+    return view('root');
 });
 
 Auth::routes();
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('root');
 
 Auth::routes();
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::get('/recepty', [App\Http\Controllers\HomeController::class, 'recipes'])->name('recipes');
+Route::get('/video-recepty', [App\Http\Controllers\HomeController::class, 'video_recipes'])->name('video_recipes');
+Route::get('/o-nas', [App\Http\Controllers\HomeController::class, 'about'])->name('about');
 
 Route::group(['middleware' => ['auth']], function() {Route::resource('user', UserController::class);});

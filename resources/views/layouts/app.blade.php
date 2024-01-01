@@ -12,12 +12,15 @@
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=Nunito" rel="stylesheet">
-    <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+
+    <!-- CSS Files -->
+    <link href="{{ asset('css/layout.css') }}" rel="stylesheet">
 
     <!-- Scripts -->
     @vite(['resources/sass/app.scss', 'resources/js/app.js'])
 </head>
-<body>
+<body class="d-flex flex-column min-vh-100">
 <header>
     <div class="hesita-top-bar">
         <div class="container">
@@ -51,8 +54,22 @@
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <!-- Left Side Of Navbar -->
                 <ul class="navbar-nav me-auto">
-                    <li class="vajico">Recepty</li>
-                    <li>Recepty</li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{route('recipes')}}">{{__('Recepty') }}</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{route(('video_recipes'))}}">{{__('Video-recepty') }}</a>
+                    </li>
+
+                    @auth
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">{{__('Pridaj recept') }}</a>
+                        </li>
+                    @endauth
+
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{route('about')}}">{{__('O nás') }}</a>
+                    </li>
                 </ul>
 
 
@@ -100,6 +117,40 @@
     <main class="py-4">
         @yield('content')
     </main>
+
 </div>
+
+
+<footer>
+    <div class="social">
+        <a href="https://www.instagram.com"><i class="bi bi-instagram"></i></a>
+        <a href="https://www.facebook.com"><i class="bi bi-facebook"></i></a>
+    </div>
+    <ul class="list">
+        <li>
+            <a href="#">Domov</a>
+        </li>
+        @guest
+            <li>
+                <a href="#">Prihlásenie</a>
+            </li>
+        @else
+            <li>
+                <a href="#">Profil</a>
+            </li>
+        @endguest
+        <li>
+            <a href="#">O nás</a>
+        </li>
+        <li>
+            <a href="#">Pravidlá</a>
+        </li>
+        <li>
+            <a href="#">Súkromie</a>
+        </li>
+    </ul>
+    <p class="copyright">Recepty pre každého @ 2023</p>
+</footer>
+
 </body>
 </html>
