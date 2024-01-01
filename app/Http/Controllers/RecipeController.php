@@ -11,12 +11,21 @@ class RecipeController extends Controller
      */
     public function index()
     {
-        //
+        return view('recipe.index');
     }
 
     /**
      * Show the form for creating a new resource.
      */
+    public function add()
+    {
+        return view('recipe.add');
+    }
+
+    public function edit(){
+        return view('recipe.edit');
+
+    }
     public function create()
     {
 
@@ -27,7 +36,7 @@ class RecipeController extends Controller
      */
     public function store(Request $request)
     {
-        //
+
     }
 
     /**
@@ -41,10 +50,6 @@ class RecipeController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
-    {
-        //
-    }
 
     /**
      * Update the specified resource in storage.

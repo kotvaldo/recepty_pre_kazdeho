@@ -28,5 +28,9 @@ Auth::routes();
 Route::get('/recepty', [App\Http\Controllers\HomeController::class, 'recipes'])->name('recipes');
 Route::get('/video-recepty', [App\Http\Controllers\HomeController::class, 'video_recipes'])->name('video_recipes');
 Route::get('/o-nas', [App\Http\Controllers\HomeController::class, 'about'])->name('about');
+Route::get('/pravidla', [App\Http\Controllers\HomeController::class, 'rules'])->name('rules');
+Route::get('/sukromie', [App\Http\Controllers\HomeController::class, 'privacy'])->name('privacy');
+Route::get('/kontakt', [App\Http\Controllers\HomeController::class, 'contact'])->name('contact');
+Route::get('/kategorie', [App\Http\Controllers\HomeController::class, 'categories'])->name('categories');
 
 Route::group(['middleware' => ['auth']], function() {Route::resource('user', UserController::class);});

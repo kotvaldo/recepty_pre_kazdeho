@@ -43,7 +43,7 @@
     <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
         <div class="container">
             <a class="navbar-brand" href="{{ url('/') }}">
-                <img class="menu-img" alt="" src="{{ asset('kuchar.png') }}">
+                <img class="menu-img" alt="" src="{{ asset('/images/kuchar.png') }}">
             </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                     data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
@@ -61,21 +61,25 @@
                         <a class="nav-link" href="{{route(('video_recipes'))}}">{{__('Video-recepty') }}</a>
                     </li>
 
-                    @auth
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">{{__('Pridaj recept') }}</a>
-                        </li>
-                    @endauth
-
                     <li class="nav-item">
-                        <a class="nav-link" href="{{route('about')}}">{{__('O nás') }}</a>
+                        <a class="nav-link" href="{{route(('categories'))}}">{{__('Kategórie') }}</a>
                     </li>
-                </ul>
 
+                </ul>
 
                 <!-- Right Side Of Navbar -->
                 <ul class="navbar-nav ms-auto">
                     <!-- Authentication Links -->
+                    @auth
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">{{__('Pridať recept') }}</a>
+                        </li>
+                    @endauth
+                    @auth
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">{{__('Moje recepty') }}</a>
+                        </li>
+                    @endauth
                     @guest
                         @if (Route::has('login'))
                             <li class="nav-item">
@@ -128,25 +132,28 @@
     </div>
     <ul class="list">
         <li>
-            <a href="#">Domov</a>
+            <a href="{{route('root')}}">Domov</a>
         </li>
         @guest
             <li>
-                <a href="#">Prihlásenie</a>
+                <a href="{{route('login')}}">Prihlásenie</a>
             </li>
         @else
             <li>
-                <a href="#">Profil</a>
+                <a href="{{route('user.index')}}">Profil</a>
             </li>
         @endguest
         <li>
-            <a href="#">O nás</a>
+            <a href="{{route('about')}}">O nás</a>
         </li>
         <li>
-            <a href="#">Pravidlá</a>
+            <a href="{{route('rules')}}">Pravidlá</a>
         </li>
         <li>
-            <a href="#">Súkromie</a>
+            <a href="{{route('privacy')}}">Súkromie</a>
+        </li>
+        <li>
+            <a href="{{route('contact')}}">Kontakt</a>
         </li>
     </ul>
     <p class="copyright">Recepty pre každého @ 2023</p>
