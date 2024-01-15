@@ -78,7 +78,7 @@ class UserController extends Controller
             'password' => 'required|min:6|confirmed',
         ]);
         $user->update($request->all());
-        if (auth()->user()->role == "Admin" && auth()->user()->id != $user->id) {
+        if (auth()->user()->can('view', User::class) && auth()->user()->id != $user->id) {
             return redirect()->route('user.users_admin')->with('alert', 'Profile has been updated successfully!');
         }
         return redirect()->route('user.index')->with('alert', 'User has been updated successfully!');

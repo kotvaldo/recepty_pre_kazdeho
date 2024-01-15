@@ -1,3 +1,4 @@
+@php use App\Models\User; @endphp
 <div class="form-group text-danger mb-2">
     @foreach ($errors->all() as $error)
         {{ $error }}<br>
