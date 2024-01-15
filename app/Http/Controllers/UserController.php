@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use Aginev\Datagrid\Datagrid;
-use App\Http\Requests\UserRequest;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
