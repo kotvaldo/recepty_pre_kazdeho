@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Category;
+use App\Models\Recipe;
 use Illuminate\Http\Request;
 
 class RecipeController extends Controller
@@ -18,15 +20,23 @@ class RecipeController extends Controller
      * Show the form for creating a new resource.
      */
 
-    public function edit(){
-        return view('recipe.edit');
+    public function edit(Recipe $recipe){
+        $categories = Category::all();
+        return view('recipe.edit', [
+            'action' => route('recipe.update'),
+            'method' => 'put',
+            'model' => $recipe,
+            'categories' => $categories,
+        ]);
 
     }
     public function create()
     {
-        return view('recipe.add', [
+        $categories = Category::all();
+        return view('recipe.create', [
             'action' => route('recipe.store'),
-            'method' => 'post'
+            'method' => 'post',
+            'categories' => $categories,
         ]);
     }
 
@@ -53,7 +63,7 @@ class RecipeController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, Recipe $recipe)
     {
         //
     }
@@ -61,8 +71,10 @@ class RecipeController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Recipe $recipe)
     {
-        //
+        $recipe->delete();
+
+        return redirect()->route('');
     }
 }

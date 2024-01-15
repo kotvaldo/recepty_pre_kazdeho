@@ -15,4 +15,10 @@ class Category extends Model
     protected $fillable = [
         'name',
     ];
+
+    public function setFilters()
+    {
+        $this->filter->like('name')
+            ->like('created_at');
+    }
 }

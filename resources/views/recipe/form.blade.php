@@ -3,8 +3,9 @@
         {{ $error }}<br>
     @endforeach
 </div>
-<form method="post" action="{{ $action }}">
-
+<form method="post" action="{{ $action }}" enctype="multipart/form-data">
+    @csrf
+    @method($method)
     <div class="form-group mb-2">
         <label for="recipe_name">Názov receptu <span style="color: red">*</span></label>
         <input type="text" class="form-control" id="recipe_name" name="recipe_name" placeholder="Zadaj názov" value="{{ old('recipe_name', @$model->recipe_name) }}">
@@ -21,17 +22,18 @@
     </div>
 
     <div class="form-group mb-2">
-        <label for="image">Obrázok receptu</label>
+        <label for="image">Obrázok receptu <span style="color: red">*</span></label>
         <input type="file" class="form-control" id="image" name="image">
     </div>
 
     <div class="form-group mb-2">
         <label for="category">Kategória</label>
         <select class="form-control" id="category" name="category">
-            {{-- Add options dynamically based on your categories --}}
-            <option value="1">Category 1</option>
-            <option value="2">Category 2</option>
-            {{-- Add more options as needed --}}
+            @foreach($categories as $category)
+                <option value="{{ $category->id }}" {{ old('category', @$model->category) == $category->id ? 'selected' : '' }}>
+                    {{ $category->name }}
+                </option>
+            @endforeach
         </select>
     </div>
 
@@ -50,5 +52,5 @@
     </div>
 
     <a href="{{ route('user.my_recipes') }}" class="btn btn-warning">Cancel</a>
-    <input type="submit" class="btn btn-success" value="Pridaj recept">
+    <input type="submit" class="btn btn-success" value="Submit">
 </form>

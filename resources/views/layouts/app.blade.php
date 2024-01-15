@@ -100,6 +100,7 @@
                                 @can('view', App\Models\User::class)
                                     <a class="dropdown-item" href="{{route('user.recipes_admin')}}">Spravovať recepty</a>
                                     <a class="dropdown-item" href="{{route('user.users_admin')}}">Spravovať používateľov</a>
+                                    <a class="dropdown-item" href="{{route('category.index')}}">Spravovať kategórie</a>
 
                                 @endcan
                                 <a class="dropdown-item" href="{{ route('logout') }}"

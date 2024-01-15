@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\RecipeController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Auth;
@@ -40,5 +41,7 @@ Route::group(['middleware' => ['auth']], function() {
     Route::get('/admin/users', [UserController::class, 'users_admin'])->name('user.users_admin');
     Route::get('/admin/recipes', [UserController::class, 'recipes_admin'])->name('user.recipes_admin');
     Route::resource('recipe', RecipeController::class);
+    Route::resource('admin/category', CategoryController::class);
+
 });
 
