@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\RecipeController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -33,4 +34,11 @@ Route::get('/sukromie', [App\Http\Controllers\HomeController::class, 'privacy'])
 Route::get('/kontakt', [App\Http\Controllers\HomeController::class, 'contact'])->name('contact');
 Route::get('/kategorie', [App\Http\Controllers\HomeController::class, 'categories'])->name('categories');
 
-Route::group(['middleware' => ['auth']], function() {Route::resource('user', UserController::class);});
+Route::group(['middleware' => ['auth']], function() {
+    Route::resource('user', UserController::class);
+    Route::get('/profile/my_recipes', [UserController::class, 'my_recipes'])->name('user.my_recipes');
+    Route::get('/admin/users', [UserController::class, 'users_admin'])->name('user.users_admin');
+    Route::get('/admin/recipes', [UserController::class, 'recipes_admin'])->name('user.recipes_admin');
+    Route::resource('recipe', RecipeController::class);
+});
+

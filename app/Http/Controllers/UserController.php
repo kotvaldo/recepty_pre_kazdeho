@@ -2,12 +2,18 @@
 
 namespace App\Http\Controllers;
 
+use Aginev\Datagrid\Datagrid;
+use App\Http\Requests\UserRequest;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
+    public function __construct()
+    {
+        $this->authorizeResource(User::class, 'user');
+    }
     /**
      * Display a listing of the resource.
      */
@@ -28,6 +34,27 @@ class UserController extends Controller
 
     }
 
+    public function create()
+    {
+        return view('user.create', [
+            'action' => route('user.store'),
+            'method' => 'post'
+        ]);
+    }
+
+    public function store(Request $request)
+    {
+        $request->validate([
+            'name' => 'required',
+            'email' => 'required|email|unique:users,email',
+            'password' => 'required|min:6|confirmed',
+            'role' => 'required',
+        ]);
+
+        $user = User::create($request->all());
+        $user->save();
+        return redirect()->route('user.users_admin')->with('alert', 'User has been created successfully!');
+    }
     /**
      * Show the form for editing the specified resource.
      */
@@ -49,9 +76,12 @@ class UserController extends Controller
         $request->validate([
             'name' => 'required',
             'email' => 'required|email',
-            'password' => 'required|min:6|confirmed'
+            'password' => 'required|min:6|confirmed',
         ]);
         $user->update($request->all());
+        if (auth()->user()->role == "Admin" && auth()->user()->id != $user->id) {
+            return redirect()->route('user.users_admin')->with('alert', 'Profile has been updated successfully!');
+        }
         return redirect()->route('user.index')->with('alert', 'User has been updated successfully!');
     }
 
@@ -61,6 +91,53 @@ class UserController extends Controller
     public function destroy(User $user)
     {
         $user->delete();
-        return redirect()->route('user.index')->with('alert', 'User has been deleted successfully!');
+        return redirect()->route('user.index');
+    }
+
+    public function my_recipes()
+    {
+        return view('user.my_recipes');
+    }
+
+    public function recipes_admin() {
+        if (!auth()->user()->can('view', User::class)) {
+            abort(403, 'Unauthorized');
+        }
+        return view('user.recipes_admin');
+
+    }
+
+    public function users_admin(Request $request) {
+        if (!auth()->user()->can('view', User::class)) {
+            abort(403, 'Unauthorized');
+        }
+        $users = User::query()->filter($request->get('f', []))->get();
+
+        $grid = new Datagrid($users, $request->get('f', []));
+
+        $grid->setColumn('name', 'Full name', ['sortable' => true, 'has_filters' => true])
+            ->setColumn('email', 'Email address', ['sortable' => true, 'has_filters' => true])
+            ->setColumn('role', 'Role', [
+                'sortable' => true,
+                'has_filters' => true,
+                'filters' => ['Admin' => 'Administrator', 'User' => 'Regular user'],
+                'wrapper' => function ($value, $row) {
+                    return match ($value) {
+                        'Admin' => 'Administrator',
+                        'User' => 'Regular user'
+                    };
+                }
+            ])
+            ->setColumn('created_at', 'Created at', ['sortable' => true, 'has_filters' => true])
+            ->setActionColumn([
+                'wrapper' => function ($value, $row) {
+                    return (Auth::user()->can('update', $row->getData()) ? '<a href="' . route('user.edit', [$row->id]) . '" title="Edit" class="btn btn-sm btn-primary"><i class="bi bi-pencil-square"></i></a> ' : '') .
+                        (Auth::user()->can('delete', $row->getData()) ? '<a href="' . route('user.destroy', $row->id) . '" title="Delete" class="btn btn-sm btn-danger"><i class="bi bi-trash"></i></a>' : '');
+                }
+            ]);
+
+        return view('user.users_admin', [
+            'grid' => $grid
+        ]);
     }
 }

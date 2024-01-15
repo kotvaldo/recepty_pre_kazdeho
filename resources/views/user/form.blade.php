@@ -25,7 +25,15 @@
         <label for="password"> Password again <span style="color: red">*</span></label>
         <input type="password" class="form-control" id="password" name="password_confirmation" placeholder="Password">
     </div>
-
+    @can('view', User::class)
+        <div class="form-group mb-2">
+            <label for="role">Typ používateľa</label>
+            <select class="form-control" id="role" name="role">
+                <option value='Admin' {{ old('role', @$model->role) == 'Admin' ? 'selected' : '' }}>Administrator</option>
+                <option value='User' {{ old('role', @$model->role) == 'User' ? 'selected' : '' }}>Regular User</option>
+            </select>
+        </div>
+    @endcan
     <a href="{{ route('user.index') }}" class="btn btn-warning">Cancel</a>
     <input type="submit" class="btn btn-success" value="Send">
 </form>

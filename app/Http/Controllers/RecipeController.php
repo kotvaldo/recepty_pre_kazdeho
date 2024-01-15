@@ -17,10 +17,6 @@ class RecipeController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function add()
-    {
-        return view('recipe.add');
-    }
 
     public function edit(){
         return view('recipe.edit');
@@ -28,7 +24,10 @@ class RecipeController extends Controller
     }
     public function create()
     {
-
+        return view('recipe.add', [
+            'action' => route('recipe.store'),
+            'method' => 'post'
+        ]);
     }
 
     /**
