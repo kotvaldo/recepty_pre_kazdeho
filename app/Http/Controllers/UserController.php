@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Aginev\Datagrid\Datagrid;
+use App\Models\Recipe;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -13,6 +14,7 @@ class UserController extends Controller
     {
         $this->authorizeResource(User::class, 'user');
     }
+
     /**
      * Display a listing of the resource.
      */
@@ -54,6 +56,7 @@ class UserController extends Controller
         $user->save();
         return redirect()->route('user.users_admin')->with('alert', 'User has been created successfully!');
     }
+
     /**
      * Show the form for editing the specified resource.
      */
@@ -82,10 +85,10 @@ class UserController extends Controller
         $user->update($request->all());
 
         if ($request->hasFile('profile_photo') && $request->file('profile_photo')->isValid()) {
-            $avatarName = time().'.'.$request->profile_photo->getClientOriginalExtension();
+            $avatarName = time() . '.' . $request->profile_photo->getClientOriginalExtension();
             $request->profile_photo->move(public_path('images'), $avatarName);
         }
-        $user->update(['profile_photo'=>$avatarName]);
+        $user->update(['profile_photo' => $avatarName]);
 
 
         if (auth()->user()->can('view', User::class) && auth()->user()->id != $user->id) {
@@ -99,16 +102,29 @@ class UserController extends Controller
      */
     public function destroy(User $user)
     {
+        $recipes = Recipe::where('user_id', $user->id)->get();
+
+        foreach ($recipes as $recipe) {
+            $recipe->delete();
+        }
+
+        if (Auth::user()->id != $user->id) {
+            $user->delete();
+            return redirect()->route('user.users_admin')->with('alert', 'Profile with all recipes has been deleted successfully!');
+        }
         $user->delete();
-        return redirect()->route('user.users_admin')->with('alert', 'Profile has been deleted successfully!');
+        return redirect()->route('user.index')->with('alert', 'Profile with all recipes has been deleted successfully!');
+
+
     }
 
-    public function my_recipes()
+    public function my_recipes(User $user)
     {
         return view('user.my_recipes');
     }
 
-    public function recipes_admin() {
+    public function recipes_admin()
+    {
         if (!auth()->user()->can('view', User::class)) {
             abort(403, 'Unauthorized');
         }
@@ -116,7 +132,8 @@ class UserController extends Controller
 
     }
 
-    public function users_admin(Request $request) {
+    public function users_admin(Request $request)
+    {
         if (!auth()->user()->can('view', User::class)) {
             abort(403, 'Unauthorized');
         }
@@ -141,7 +158,7 @@ class UserController extends Controller
             ->setActionColumn([
                 'wrapper' => function ($value, $row) {
                     return (Auth::user()->can('update', $row->getData()) ? '<a href="' . route('user.edit', [$row->id]) . '" title="Edit" class="btn btn-sm btn-primary"><i class="bi bi-pencil-square"></i></a> ' : '') .
-                        (Auth::user()->can('delete', $row->getData()) ? '<a href="' . route('user.destroy', $row->id) . '" title="Delete" class="btn btn-sm btn-danger"><i class="bi bi-trash"></i></a>' : '');
+                        (Auth::user()->can('delete', $row->getData()) ? '<a href="' . route('user.delete', $row->id) . '" title="Delete" class="btn btn-sm btn-danger"><i class="bi bi-trash"></i></a>' : '');
                 }
             ]);
 

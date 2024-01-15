@@ -37,13 +37,12 @@ Route::get('/kategorie', [App\Http\Controllers\HomeController::class, 'categorie
 
 Route::group(['middleware' => ['auth']], function() {
     Route::resource('user', UserController::class);
-    Route::get('/users/{user}', [UserController::class, 'destroy'])->name('user.destroy');
-    Route::get('/user/my_recipes', [UserController::class, 'my_recipes'])->name('user.my_recipes');
-    Route::get('/admin/users', [UserController::class, 'users_admin'])->name('user.users_admin');
-    Route::get('/admin/recipes', [UserController::class, 'recipes_admin'])->name('user.recipes_admin');
-    Route::resource('recipe', RecipeController::class);
-    Route::resource('admin/category', CategoryController::class);
-    Route::get('admin/category/{category}', [CategoryController::class, 'destroy'])->name('category.destroy');
-
+    Route::resource('/recipe', RecipeController::class);
+    Route::resource('/admin/category', CategoryController::class);
+    Route::get('/users/my-recipes', [UserController::class, 'my_recipes'])->name('user.my_recipes');
+    Route::get('/admin/users/all', [UserController::class, 'users_admin'])->name('user.users_admin');
+    Route::get('/admin/recipes/all', [UserController::class, 'recipes_admin'])->name('user.recipes_admin');
+    Route::get('/admin/category/{category}/delete', [CategoryController::class, 'destroy'])->name('category.delete');
+    Route::get('/users/{user}/delete', [UserController::class, 'destroy'])->name('user.delete');
 });
 
