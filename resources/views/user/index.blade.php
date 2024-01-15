@@ -6,7 +6,7 @@
 
         <div class="container mt-5">
             <div class="container text-center mt-5">
-                <img src="{{asset($model['profile_photo']) }}" alt="Profile Image" class="rounded-circle"
+                <img src="{{asset('images/' . $model['profile_photo']) }}" alt="Profile Image" class="rounded-circle"
                      style="width: 100px; height: 100px; object-fit: cover;">
                 <h4 class="mt-3">{{@$model->name}}</h4>
                 <span class="mt-3">{{@$model->email}}</span>

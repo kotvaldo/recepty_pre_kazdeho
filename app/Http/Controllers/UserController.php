@@ -77,7 +77,17 @@ class UserController extends Controller
             'email' => 'required|email',
             'password' => 'required|min:6|confirmed',
         ]);
+        $avatarName = $user->profile_photo;
+
         $user->update($request->all());
+
+        if ($request->hasFile('profile_photo') && $request->file('profile_photo')->isValid()) {
+            $avatarName = time().'.'.$request->profile_photo->getClientOriginalExtension();
+            $request->profile_photo->move(public_path('images'), $avatarName);
+        }
+        $user->update(['profile_photo'=>$avatarName]);
+
+
         if (auth()->user()->can('view', User::class) && auth()->user()->id != $user->id) {
             return redirect()->route('user.users_admin')->with('alert', 'Profile has been updated successfully!');
         }
