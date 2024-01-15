@@ -100,7 +100,7 @@ class UserController extends Controller
     public function destroy(User $user)
     {
         $user->delete();
-        return redirect()->route('user.index');
+        return redirect()->route('user.users_admin')->with('alert', 'Profile has been deleted successfully!');
     }
 
     public function my_recipes()

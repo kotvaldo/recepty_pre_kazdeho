@@ -45,7 +45,16 @@ class RecipeController extends Controller
      */
     public function store(Request $request)
     {
+        $request->validate([
+            'name' => 'required',
+            'email' => 'required|email|unique:users,email',
+            'password' => 'required|min:6|confirmed',
+            'role' => 'required',
+        ]);
 
+        $recipe = User::create($request->all());
+        $user->save();
+        return redirect()->route('user.users_admin')->with('alert', 'User has been created successfully!');
     }
 
     /**

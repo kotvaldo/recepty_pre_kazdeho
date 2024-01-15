@@ -47,7 +47,7 @@
     </div>
 
     <div class="form-group mb-2">
-        <label for="cooking_time">Čas prípravy(minúty)</label>
+        <label for="cooking_time">Čas prípravy(minúty)<span style="color: red"> *</span></label>
         <input type="number" class="form-control" id="cooking_time" name="cooking_time" placeholder="Zadaj čas prípravy" value="{{ old('cooking_time', @$model->cooking_time) }}">
     </div>
 

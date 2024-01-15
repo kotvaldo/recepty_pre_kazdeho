@@ -28,7 +28,7 @@ class CategoryController extends Controller
             ->setActionColumn([
                 'wrapper' => function ($value, $row) {
                     return (Auth::user()->can('update', $row->getData()) ? '<a href="' . route('category.edit', [$row->id]) . '" title="Edit" class="btn btn-sm btn-primary"><i class="bi bi-pencil-square"></i></a> ' : '') .
-                        (Auth::user()->can('delete', $row->getData()) ? '<a href="' . route('category.destroy', $row->id) . '" title="Delete" class="btn btn-sm btn-danger"><i class="bi bi-trash"></i></a>' : '');
+                        (Auth::user()->can('delete', $row->getData()) ? '<a href="' . route('category.destroy', [$row->id]) . '" title="Delete" class="btn btn-sm btn-danger"><i class="bi bi-trash"></i></a>' : '');
                 }
             ]);
 
@@ -76,9 +76,9 @@ class CategoryController extends Controller
     public function edit(Category $category)
     {
         return view('category.edit', [
-            'action' => route('user.update', $category->id),
+            'action' => route('category.update', $category->id),
             'method' => 'put',
-            'model' => $category
+            'model' => $category,
         ]);
     }
 
@@ -93,7 +93,7 @@ class CategoryController extends Controller
 
         $category->update($request->all());
 
-        return redirect()->route('user.index')->with('alert', 'Category has been updated successfully!');
+        return redirect()->route('category.index')->with('alert', 'Category has been updated successfully!');
     }
 
     /**
@@ -101,6 +101,7 @@ class CategoryController extends Controller
      */
     public function destroy(Category $category)
     {
+
         $category->delete();
         return redirect()->route('category.index')->with('alert', 'Category has been removed successfully!');
     }
