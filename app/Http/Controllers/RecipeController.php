@@ -2,9 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use Aginev\Datagrid\Datagrid;
 use App\Models\Category;
 use App\Models\Recipe;
+use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class RecipeController extends Controller
 {
@@ -16,9 +19,40 @@ class RecipeController extends Controller
     {
         $this->authorizeResource(Recipe::class, 'recipe');
     }
-    public function index()
+    public function index(Request $request)
     {
-        return view('recipe.index');
+        if (!auth()->user()->can('view', User::class)) {
+            abort(403, 'Unauthorized');
+        }
+
+        $recipes = Recipe::query()->filter($request->get('f', []))->get();
+
+        $grid = new Datagrid($recipes, $request->get('f', []));
+
+        $grid->setColumn('name', 'Recipe name', ['sortable' => true, 'has_filters' => true])
+            ->setColumn('ingredients', 'Ingredients', ['sortable' => true, 'has_filters' => true])
+            ->setColumn('category_id', 'Category', [
+                'sortable' => true,
+                'has_filters' => true,
+                'filters' => Category::pluck('name', 'id')->toArray(),
+                'wrapper' => function ($value, $row) {
+                    $categoryName = Category::find($value)->name;
+                    return $categoryName ?? $value; // Ak názov nemožno nájsť, použite identifikátor
+                }
+            ])
+            ->setColumn('difficulty', 'Difficulty', ['sortable' => true, 'has_filters' => true])
+            ->setColumn('cooking_time', 'Cooking time', ['sortable' => true, 'has_filters' => true])
+            ->setActionColumn([
+                'wrapper' => function ($value, $row) {
+                    return (Auth::user()->can('update', $row->getData()) ? '<a href="' . route('recipe.edit', [$row->id]) . '" title="Edit" class="btn btn-sm btn-primary"><i class="bi bi-pencil-square"></i></a> ' : '') .
+                        (Auth::user()->can('delete', $row->getData()) ? '<a href="' . route('recipe.delete', $row->id) . '" title="Delete" class="btn btn-sm btn-danger" onclick="return confirm(\'Are you sure ?\')"><i class="bi bi-trash"></i></a>' : '');
+                }
+            ]);
+
+        return view('recipe.index', [
+            'grid' => $grid
+        ]);
+
     }
 
     /**
@@ -28,7 +62,7 @@ class RecipeController extends Controller
     public function edit(Recipe $recipe){
         $categories = Category::all();
         return view('recipe.edit', [
-            'action' => route('recipe.update'),
+            'action' => route('recipe.update', $recipe->id),
             'method' => 'put',
             'model' => $recipe,
             'categories' => $categories,
@@ -74,11 +108,12 @@ class RecipeController extends Controller
             'category_id' => $request->category_id,
             'difficulty' => $request->difficulty,
             'cooking_time' => $request->cooking_time,
+            'user_id' => Auth::user()->getAuthIdentifier(),
         ]);
 
         $recipe->save();
 
-        return redirect()->route('user.my_recipes')->with('alert', 'Recipe was successfully created!');
+        return redirect()->route('recipe.index')->with('alert', 'Recipe was successfully created!');
     }
 
     /**
@@ -102,7 +137,7 @@ class RecipeController extends Controller
             'name' => 'required',
             'ingredients' => 'required',
             'instructions' => 'required',
-            'image' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048', // môžete zmeniť na 'nullable' ak nechcete povinný obrázok
+            'image' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'category_id' => 'required',
             'difficulty' => 'required',
             'cooking_time' => 'required',
@@ -116,8 +151,7 @@ class RecipeController extends Controller
             $recipe->update(['image' => $avatarName]);
         }
 
-
-        return redirect()->route('recipes.index')->with('alert', 'Recipe was successfully edited!');
+        return redirect()->route('recipe.index')->with('alert', 'Recipe was successfully edited!');
     }
 
     /**
@@ -127,6 +161,23 @@ class RecipeController extends Controller
     {
         $recipe->delete();
 
-        return redirect()->route('')->with('alert', 'Recipe was successfully removed!');
+        return redirect()->route('recipe.index')->with('alert', 'Recipe was successfully removed!');
+    }
+
+    public function all_recipes(Request $request)
+    {
+
+    }
+
+    public function searchForNameOfCategory($id)
+    {
+        $category = Category::find($id);
+
+        if (!$category) {
+            return response()->json(['error' => 'Kategória nebola nájdená.'], 404);
+        }
+
+        // Vráť názov kategórie
+        return response()->json(['name' => $category->name]);
     }
 }

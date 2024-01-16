@@ -20,6 +20,7 @@ class Recipe extends Model
         'category_id',
         'difficulty',
         'cooking_time',
+        'user_id',
     ];
     protected $casts = [
         'difficulty' => 'integer',
@@ -28,5 +29,15 @@ class Recipe extends Model
     public function category()
     {
         return $this->belongsTo(Category::class);
+    }
+
+    public function setFilters()
+    {
+        $this->filter->like('name')
+            ->like('ingredients')
+            ->like('category_id')
+            ->like('difficulty')
+            ->like('cooking_time');
+
     }
 }

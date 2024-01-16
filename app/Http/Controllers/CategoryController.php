@@ -29,7 +29,7 @@ class CategoryController extends Controller
             ->setActionColumn([
                 'wrapper' => function ($value, $row) {
                     return (Auth::user()->can('update', $row->getData()) ? '<a href="' . route('category.edit', [$row->id]) . '" title="Edit" class="btn btn-sm btn-primary"><i class="bi bi-pencil-square"></i></a> ' : '') .
-                        (Auth::user()->can('delete', $row->getData()) ? '<a href="' . route('category.delete', $row->id) . '" title="Delete" class="btn btn-sm btn-danger"><i class="bi bi-trash"></i></a>' : '');
+                        (Auth::user()->can('delete', $row->getData()) ? '<a href="' . route('category.delete', $row->id) . '" title="Delete" class="btn btn-sm btn-danger" onclick="return confirm(\'Are you sure ?\')"><i class="bi bi-trash"></i></a>' : '');
                 }
             ]);
 

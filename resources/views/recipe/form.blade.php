@@ -7,8 +7,8 @@
     @csrf
     @method($method)
     <div class="form-group mb-2">
-        <label for="recipe_name">Názov receptu <span style="color: red">*</span></label>
-        <input type="text" class="form-control" id="recipe_name" name="recipe_name" placeholder="Zadaj názov" value="{{ old('recipe_name', @$model->recipe_name) }}">
+        <label for="name">Názov receptu <span style="color: red">*</span></label>
+        <input type="text" class="form-control" id="name" name="name" placeholder="Zadaj názov" value="{{ old('name', @$model->name) }}">
     </div>
 
     <div class="form-group mb-2">
@@ -22,15 +22,15 @@
     </div>
 
     <div class="form-group mb-2">
-        <label for="image">Obrázok receptu <span style="color: red">*</span></label>
+        <label for="image">Obrázok receptu</label>
         <input type="file" class="form-control" id="image" name="image">
     </div>
 
     <div class="form-group mb-2">
-        <label for="category">Kategória</label>
-        <select class="form-control" id="category" name="category">
+        <label for="category">Kategória<span style="color: red"> *</span></label>
+        <select class="form-control" id="category_id" name="category_id">
             @foreach($categories as $category)
-                <option value="{{ $category->id }}" {{ old('category', @$model->category) == $category->id ? 'selected' : '' }}>
+                <option value="{{ $category->id }}" {{ old('category_id', @$model->category) == $category->id ? 'selected' : '' }}>
                     {{ $category->name }}
                 </option>
             @endforeach
@@ -38,7 +38,7 @@
     </div>
 
     <div class="form-group mb-2">
-        <label for="difficulty">Obtiažnosť</label>
+        <label for="difficulty">Obtiažnosť <span style="color: red">*</span></label>
         <select class="form-control" id="difficulty" name="difficulty">
             <option value="1">Ľahká</option>
             <option value="2">Stredná</option>

@@ -123,14 +123,6 @@ class UserController extends Controller
         return view('user.my_recipes');
     }
 
-    public function recipes_admin()
-    {
-        if (!auth()->user()->can('view', User::class)) {
-            abort(403, 'Unauthorized');
-        }
-        return view('user.recipes_admin');
-
-    }
 
     public function users_admin(Request $request)
     {
@@ -158,7 +150,7 @@ class UserController extends Controller
             ->setActionColumn([
                 'wrapper' => function ($value, $row) {
                     return (Auth::user()->can('update', $row->getData()) ? '<a href="' . route('user.edit', [$row->id]) . '" title="Edit" class="btn btn-sm btn-primary"><i class="bi bi-pencil-square"></i></a> ' : '') .
-                        (Auth::user()->can('delete', $row->getData()) ? '<a href="' . route('user.delete', $row->id) . '" title="Delete" class="btn btn-sm btn-danger"><i class="bi bi-trash"></i></a>' : '');
+                        (Auth::user()->can('delete', $row->getData()) ? '<a href="' . route('user.delete', $row->id) . '" title="Delete" class="btn btn-sm btn-danger" onclick="return confirm(\'Are you sure ?\')"><i class="bi bi-trash"></i></a>' : '');
                 }
             ]);
 

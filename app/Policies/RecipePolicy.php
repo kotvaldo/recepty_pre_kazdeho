@@ -28,7 +28,7 @@ class RecipePolicy
      */
     public function create(User $user): bool
     {
-        return $user->is_authenticated; // Používatelia, ktorí sú prihlásení, môžu vytvárať
+        return true; // Používatelia, ktorí sú prihlásení, môžu vytvárať
     }
 
     /**

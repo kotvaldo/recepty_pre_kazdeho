@@ -72,7 +72,7 @@
                     <!-- Authentication Links -->
                     @auth
                         <li class="nav-item">
-                            <a class="nav-link" href="{{route('recipe.create')}}">{{__('Pridať recept') }}</a>
+                            <a class="nav-link" href="{{route('recipe.index')}}">{{__('Spravuj recepty') }}</a>
                         </li>
                     @endauth
                     @guest
@@ -96,9 +96,7 @@
 
                             <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
                                 <a class="dropdown-item" href="{{ route('user.index') }}">Profile</a>
-                                <a class="dropdown-item" href="{{ route('user.my_recipes')}}">Moje recepty</a>
                                 @can('view', App\Models\User::class)
-                                    <a class="dropdown-item" href="{{route('user.recipes_admin')}}">Spravovať recepty</a>
                                     <a class="dropdown-item" href="{{route('user.users_admin')}}">Spravovať používateľov</a>
                                     <a class="dropdown-item" href="{{route('category.index')}}">Spravovať kategórie</a>
 
