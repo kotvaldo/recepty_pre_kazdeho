@@ -72,7 +72,7 @@
                     <!-- Authentication Links -->
                     @auth
                         <li class="nav-item">
-                            <a class="nav-link" href="{{route('recipe.index')}}">{{__('Spravuj recepty') }}</a>
+                            <a class="nav-link" href="{{route('recipe.index')}}">{{__('Spravovať recepty') }}</a>
                         </li>
                     @endauth
                     @guest

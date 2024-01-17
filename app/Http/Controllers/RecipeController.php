@@ -163,15 +163,25 @@ class RecipeController extends Controller
             'difficulty' => 'required',
             'cooking_time' => 'required',
         ]);
-
-        $recipe->update($request->all());
+        $oldImage = null;
+        $avatarName = null;
 
         if ($request->hasFile('image')) {
+            $oldImage = $recipe->image;
             $avatarName = time() . '.' . $request->image->getClientOriginalExtension();
             $request->image->move(public_path('images'), $avatarName);
-            $recipe->update(['image' => $avatarName]);
+
         }
 
+        $recipe->update($request->all());
+        $recipe->update(['image' => $avatarName]);
+
+        if ($oldImage) {
+            $oldImagePath = public_path('images') . '/' . $oldImage;
+            if (file_exists($oldImagePath)) {
+                unlink($oldImagePath);
+            }
+        }
         return redirect()->route('recipe.index')->with('alert', 'Recipe was successfully edited!');
     }
 
@@ -180,25 +190,16 @@ class RecipeController extends Controller
      */
     public function destroy(Recipe $recipe)
     {
+        $oldImage = $recipe->image;
+        if ($oldImage) {
+            $oldImagePath = public_path('images') . '/' . $oldImage;
+            if (file_exists($oldImagePath)) {
+                unlink($oldImagePath);
+            }
+        }
         $recipe->delete();
 
         return redirect()->route('recipe.index')->with('alert', 'Recipe was successfully removed!');
     }
 
-    public function all_recipes(Request $request)
-    {
-
-    }
-
-    public function searchForNameOfCategory($id)
-    {
-        $category = Category::find($id);
-
-        if (!$category) {
-            return response()->json(['error' => 'Kategória nebola nájdená.'], 404);
-        }
-
-        // Vráť názov kategórie
-        return response()->json(['name' => $category->name]);
-    }
 }

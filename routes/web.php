@@ -42,6 +42,6 @@ Route::group(['middleware' => ['auth']], function() {
        Route::get('/admin/users/all', [UserController::class, 'users_admin'])->name('user.users_admin');
     Route::get('/admin/category/{category}/delete', [CategoryController::class, 'destroy'])->name('category.delete');
     Route::get('/users/{user}/delete', [UserController::class, 'destroy'])->name('user.delete');
-    Route::get('/recipes/{recipe}/delete', [UserController::class, 'destroy'])->name('recipe.delete');
+    Route::get('/recipes/{recipe}/delete', [RecipeController::class, 'destroy'])->name('recipe.delete');
 });
 
