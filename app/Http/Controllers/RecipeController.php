@@ -54,14 +54,14 @@ class RecipeController extends Controller
                 'has_filters' => true,
                 'wrapper' => function ($value, $row) {
                     $difficultyLabels = [
-                        1 => 'Easy',
-                        2 => 'Medium',
-                        3 => 'Hard',
+                        1 => 'Ľahká',
+                        2 => 'Stredná',
+                        3 => 'Ťažká',
                     ];
 
-                    return $difficultyLabels[$value] ?? $value]
+                    return $difficultyLabels[$value] ?? $value;
                 }
-            )
+            ])
             ->setColumn('cooking_time', 'Cooking time (minúty)', ['sortable' => true, 'has_filters' => true])
             ->setActionColumn([
                 'wrapper' => function ($value, $row) {
