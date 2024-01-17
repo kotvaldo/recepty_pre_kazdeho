@@ -19,17 +19,27 @@ class RecipeController extends Controller
     {
         $this->authorizeResource(Recipe::class, 'recipe');
     }
+
     public function index(Request $request)
     {
-        if (!auth()->user()->can('view', User::class)) {
-            abort(403, 'Unauthorized');
+        $recipes = null;
+        if (auth()->user()->role == 'Admin') {
+            $recipes = Recipe::query()->filter($request->get('f', []))->get();
+        } else {
+            $userID = Auth::id();
+            $recipes = Recipe::query()->where('user_id', $userID)->filter($request->get('f', []))->get();
         }
-
-        $recipes = Recipe::query()->filter($request->get('f', []))->get();
-
         $grid = new Datagrid($recipes, $request->get('f', []));
 
         $grid->setColumn('name', 'Recipe name', ['sortable' => true, 'has_filters' => true])
+            ->setColumn('user_id', 'Owner', ['sortable' => true,
+                'has_filters' => true,
+                'filters' => User::pluck('name', 'id')->toArray(),
+                'wrapper' => function ($value, $row) {
+                    $userName = User::find($value)->name;
+                    return $userName ?? $value;
+                }
+            ])
             ->setColumn('ingredients', 'Ingredients', ['sortable' => true, 'has_filters' => true])
             ->setColumn('category_id', 'Category', [
                 'sortable' => true,
@@ -40,26 +50,36 @@ class RecipeController extends Controller
                     return $categoryName ?? $value; // Ak názov nemožno nájsť, použite identifikátor
                 }
             ])
-            ->setColumn('difficulty', 'Difficulty', ['sortable' => true, 'has_filters' => true])
-            ->setColumn('cooking_time', 'Cooking time', ['sortable' => true, 'has_filters' => true])
+            ->setColumn('difficulty', 'Difficulty', ['sortable' => true,
+                'has_filters' => true,
+                'wrapper' => function ($value, $row) {
+                    $difficultyLabels = [
+                        1 => 'Easy',
+                        2 => 'Medium',
+                        3 => 'Hard',
+                    ];
+
+                    return $difficultyLabels[$value] ?? $value]
+                }
+            )
+            ->setColumn('cooking_time', 'Cooking time (minúty)', ['sortable' => true, 'has_filters' => true])
             ->setActionColumn([
                 'wrapper' => function ($value, $row) {
                     return (Auth::user()->can('update', $row->getData()) ? '<a href="' . route('recipe.edit', [$row->id]) . '" title="Edit" class="btn btn-sm btn-primary"><i class="bi bi-pencil-square"></i></a> ' : '') .
                         (Auth::user()->can('delete', $row->getData()) ? '<a href="' . route('recipe.delete', $row->id) . '" title="Delete" class="btn btn-sm btn-danger" onclick="return confirm(\'Are you sure ?\')"><i class="bi bi-trash"></i></a>' : '');
                 }
             ]);
-
         return view('recipe.index', [
             'grid' => $grid
         ]);
-
     }
 
     /**
      * Show the form for creating a new resource.
      */
 
-    public function edit(Recipe $recipe){
+    public function edit(Recipe $recipe)
+    {
         $categories = Category::all();
         return view('recipe.edit', [
             'action' => route('recipe.update', $recipe->id),
@@ -69,6 +89,7 @@ class RecipeController extends Controller
         ]);
 
     }
+
     public function create()
     {
         $categories = Category::all();
