@@ -34,7 +34,7 @@
         <input type="text" class="form-control" id="video_url" name="video_url" placeholder="Zadaj url..." value="{{ old('video_url', @$model->video_url) }}">
     </div>
     <div class="form-group mb-2">
-        <label for="category">Kategória<span style="color: red"> *</span></label>
+        <label for="category_id">Kategória<span style="color: red"> *</span></label>
         <select class="form-control" id="category_id" name="category_id">
             @foreach($categories as $category)
                 <option value="{{ $category->id }}" {{ old('category_id', @$model->category_id) == $category->id ? 'selected' : '' }}>{{ $category->name }}</option>

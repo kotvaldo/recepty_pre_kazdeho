@@ -1,7 +1,6 @@
 if (videoLink) {
     var videoId = getYouTubeVideoId(videoLink);
-    var embedUrl = 'https://www.youtube.com/embed/' + videoId;
-    document.getElementById('youtubeVideoFrame').src = embedUrl;
+    document.getElementById('youtubeVideoFrame').src = 'https://www.youtube.com/embed/' + videoId;
 } else {
     // Default YouTube video if videoLink is not provided
     document.getElementById('youtubeVideoFrame').src = 'https://www.youtube.com/embed/tgbNymZ7vqY';

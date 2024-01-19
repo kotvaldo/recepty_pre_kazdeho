@@ -31,7 +31,7 @@
                             <h3>Video:</h3>
                         </div>
                         <div class="video-container">
-                            <iframe id="youtubeVideoFrame" width="600" height="400" frameborder="0"
+                            <iframe id="youtubeVideoFrame" width="600" height="400"
                                     allowfullscreen></iframe>
                             <script>
                                 var videoLink = "{{ $recipe->video_url }}";
