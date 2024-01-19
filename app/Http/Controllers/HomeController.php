@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Recipe;
 use Illuminate\Http\Request;
 
 class HomeController extends Controller
@@ -28,7 +29,9 @@ class HomeController extends Controller
 
     public function recipes()
     {
-        return view('home.recipes');
+        $recipes = Recipe::all();
+
+        return view('home.recipes')->with('recipes', $recipes);
     }
 
     public function video_recipes()
