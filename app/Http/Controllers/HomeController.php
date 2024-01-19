@@ -27,19 +27,47 @@ class HomeController extends Controller
         return view('root');
     }
 
-    public function recipes()
+    public function recipes(Request $request)
     {
-        $recipes = Recipe::whereNull('video_url')->get();
+        if($request->ajax()) {
+            $page = $request->input('page', 1);
+            $search = $request->input('search', '');
 
-        return view('home.recipes')->with('recipes', $recipes);
+            // Pridajte logiku na načítavanie receptov s vyhľadávaním
+            $query = Recipe::query();
+            $query->whereNull('video_url');
+            $query->when(!empty($search), function ($q) use ($search) {
+                return $q->where('name', 'like', '%' . $search . '%');
+            });
+
+            $recipes = $query->paginate(500, ['*'], 'page', $page);
+
+            return response()->json(['recipes' => $recipes]);
+        }
+        return view('home.recipes');
     }
 
-    public function video_recipes()
-    {
-        $recipes = Recipe::whereNotNull('video_url')->get();
 
-        return view('home.video_recipes')->with('recipes', $recipes);
+    public function video_recipes(Request $request)
+    {
+        if ($request->ajax()) {
+            $page = $request->input('page', 1);
+            $search = $request->input('search', '');
+
+            $query = Recipe::query();
+            $query->when(!empty($search), function ($q) use ($search) {
+                return $q->where('name', 'like', '%' . $search . '%');
+            });
+            $query->whereNotNull('video_url');
+
+            $recipes = $query->paginate(500, ['*'], 'page', $page);
+
+            return response()->json(['recipes' => $recipes]);
+        }
+
+        return view('home.video_recipes');
     }
+
 
     public function about()
     {

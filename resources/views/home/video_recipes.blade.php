@@ -1,40 +1,25 @@
 @extends('layouts.app')
 
 @section('content')
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
-          integrity="sha384-xrRqF5n6n1fdG5jNlIIBP2Puv5AAdNlZbPpi+u9PAzBZp2PL5ADZgV2t76c+Bct" crossorigin="anonymous">
     <link rel="stylesheet" href="{{ asset('css/all_recipes.css') }}">
     <div class="container mt-5 searchbar">
         <div class="row">
             <div class="col-md-6 mx-auto">
                 <div class="form-outline highlighted-search" data-mdb-input-init>
-                    <input type="search" id="form1" class="form-control" placeholder="Search..." aria-label="Search"/>
+                    <input type="search" id="myInput" oninput="loadRecipes()" class="form-control" placeholder="Search..." aria-label="Search"/>
                 </div>
             </div>
         </div>
     </div>
-    <div class="container mt-5">
+    <div class="container recipes-container" id="recipes-container">
         <div class="row">
-            @foreach($recipes as $recipe)
-                <div class="col-md-4 mb-4">
-                    <a href="{{ route('recipe.show', ['recipe' => $recipe]) }}" class="link">
-                        <div class="card">
-                            <img
-                                class="card-img-top" src="{{ asset('images/' . $recipe->image) }}" alt="Recipe Image">
-                            <div class="card-body">
-                                <h5 class="card-title">
-                                    {{ $recipe->name }}
-                                    <i class="bi bi-file-play-fill"></i>
-                                    <i class="bi bi-film"></i>
-                                </h5>
-                                <p class="card-text">{{ $recipe->description }}</p>
-                            </div>
-                        </div>
-                    </a>
-                </div>
-            @endforeach
         </div>
-
     </div>
-
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script src="{{ asset('js/ajaxLoadVideoRecipes.js') }}"></script>
+    <script>
+        $(document).ready(function () {
+            loadRecipes();
+        });
+    </script>
 @endsection

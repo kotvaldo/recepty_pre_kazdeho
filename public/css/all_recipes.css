@@ -53,3 +53,26 @@
     outline: none; /* Remove the default focus outline */
     border-color: #0056b3; /* Change the border color when the search bar is focused */
 }
+
+.load_button {
+    padding: 10px 20px;
+    font-size: 18px;
+    background-color: #007bff; /* Farba pozadia */
+    color: #ffffff; /* Farba textu */
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease; /* Animácia pri prejdení myšou */
+}
+
+.load_button:hover {
+    background-color: #0056b3; /* Farba pozadia pri najazdení myšou */
+}
+
+/* Štýly pre kontajner */
+.center-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh; /* Výška 100% viewportu (celého okna prehliadača) */
+}
