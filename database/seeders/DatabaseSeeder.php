@@ -4,8 +4,10 @@ namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use App\Models\Category;
+use App\Models\Recipe;
 use Illuminate\Database\Seeder;
 use App\Models\User;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 
@@ -29,13 +31,22 @@ class DatabaseSeeder extends Seeder
 
         ]);
 
+        DB::table('difficulty')->insert([
+            ['name' => 'Ľahká'],
+            ['name' => 'Stredná'],
+            ['name' => 'Ťažká'],
+            ['name' => 'Profesionálna'],
+        ]);
+
         $categories = [
             'Vegetariánske',
             'Mäsové',
             'Nízkosacharidové',
             'Bezlepkové',
             'Bezlaktózové',
-            'Vegánske'
+            'Vegánske',
+            'Pizza',
+            'Klasické'
         ];
 
         foreach ($categories as $category) {
@@ -43,5 +54,7 @@ class DatabaseSeeder extends Seeder
                 'name' => $category,
             ]);
         }
+
+        Recipe::factory(30)->create();
     }
 }

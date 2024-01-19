@@ -34,14 +34,17 @@ Route::get('/pravidla', [App\Http\Controllers\HomeController::class, 'rules'])->
 Route::get('/sukromie', [App\Http\Controllers\HomeController::class, 'privacy'])->name('privacy');
 Route::get('/kontakt', [App\Http\Controllers\HomeController::class, 'contact'])->name('contact');
 Route::get('/kategorie', [App\Http\Controllers\HomeController::class, 'categories'])->name('categories');
+Route::get('/recipes/{recipe}', [RecipeController::class, 'show'])->name('recipe.show');
 
 Route::group(['middleware' => ['auth']], function() {
     Route::resource('user', UserController::class);
-    Route::resource('recipe', RecipeController::class);
+    Route::resource('recipe', RecipeController::class)->except('show');
     Route::resource('/admin/category', CategoryController::class);
        Route::get('/admin/users/all', [UserController::class, 'users_admin'])->name('user.users_admin');
     Route::get('/admin/category/{category}/delete', [CategoryController::class, 'destroy'])->name('category.delete');
     Route::get('/users/{user}/delete', [UserController::class, 'destroy'])->name('user.delete');
     Route::get('/recipes/{recipe}/delete', [RecipeController::class, 'destroy'])->name('recipe.delete');
 });
+
+
 

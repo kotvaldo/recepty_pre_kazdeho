@@ -21,6 +21,8 @@ class Recipe extends Model
         'difficulty',
         'cooking_time',
         'user_id',
+        'video_url',
+        'description',
     ];
     protected $casts = [
         'difficulty' => 'integer',

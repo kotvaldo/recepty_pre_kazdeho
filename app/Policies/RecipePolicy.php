@@ -10,7 +10,7 @@ class RecipePolicy
     /**
      * Create a new policy instance.
      */
-    public function viewAny(User $user): bool
+    public function viewAny(): bool
     {
         return true;
     }
@@ -18,7 +18,7 @@ class RecipePolicy
     /**
      * Determine whether the user can view the model.
      */
-    public function view(User $user): bool
+    public function view(): bool
     {
         return true;
     }

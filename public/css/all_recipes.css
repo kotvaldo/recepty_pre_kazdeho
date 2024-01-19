@@ -1,0 +1,55 @@
+.card {
+    background-color: #fff;
+    padding: 30px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    margin-top: 40px;
+    text-align: left;
+    border: 2px solid #ddd;
+}
+
+.card:hover {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Add a subtle box-shadow on hover */
+}
+
+.card-title {
+    font-size: 1.2rem;
+    font-weight: bold;
+}
+
+.card-text {
+    font-size: 14px;
+    color: #555;
+}
+
+.btn-primary {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+}
+
+.btn-primary:hover {
+    background-color: #0056b3;
+}
+
+.link {
+    font-size: 1.2rem;
+    font-weight: bold;
+    font-style: normal;
+    text-decoration: none;
+}
+.link:hover .card {
+    transform: scale(1.2);
+}
+
+.highlighted-search {
+    border: 2px solid #000000;
+    border-radius: 5px;
+    width: 100%;
+    transition: border-color 0.3s ease;
+}
+
+.highlighted-search:focus {
+    outline: none; /* Remove the default focus outline */
+    border-color: #0056b3; /* Change the border color when the search bar is focused */
+}

@@ -29,14 +29,16 @@ class HomeController extends Controller
 
     public function recipes()
     {
-        $recipes = Recipe::all();
+        $recipes = Recipe::whereNull('video_url')->get();
 
         return view('home.recipes')->with('recipes', $recipes);
     }
 
     public function video_recipes()
     {
-        return view('home.video_recipes');
+        $recipes = Recipe::whereNotNull('video_url')->get();
+
+        return view('home.video_recipes')->with('recipes', $recipes);
     }
 
     public function about()

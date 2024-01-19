@@ -8,6 +8,7 @@ use App\Models\Recipe;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class RecipeController extends Controller
 {
@@ -17,7 +18,7 @@ class RecipeController extends Controller
 
     public function __construct()
     {
-        $this->authorizeResource(Recipe::class, 'recipe');
+        $this->authorizeResource(Recipe::class, 'recipe', ['except' => 'show']);
     }
 
     public function index(Request $request)
@@ -40,7 +41,7 @@ class RecipeController extends Controller
                     return $userName ?? $value;
                 }
             ])
-            ->setColumn('ingredients', 'Ingredients', ['sortable' => true, 'has_filters' => true])
+            ->setColumn('description', 'Description', ['sortable' => true, 'has_filters' => true])
             ->setColumn('category_id', 'Category', [
                 'sortable' => true,
                 'has_filters' => true,
@@ -50,16 +51,11 @@ class RecipeController extends Controller
                     return $categoryName ?? $value; // Ak názov nemožno nájsť, použite identifikátor
                 }
             ])
-            ->setColumn('difficulty', 'Difficulty', ['sortable' => true,
+            ->setColumn('difficulty', 'Difficulty', [
+                'sortable' => true,
                 'has_filters' => true,
                 'wrapper' => function ($value, $row) {
-                    $difficultyLabels = [
-                        1 => 'Ľahká',
-                        2 => 'Stredná',
-                        3 => 'Ťažká',
-                    ];
-
-                    return $difficultyLabels[$value] ?? $value;
+                    return $row->difficulty->name ?? $value;
                 }
             ])
             ->setColumn('cooking_time', 'Cooking time (minúty)', ['sortable' => true, 'has_filters' => true])
@@ -81,11 +77,13 @@ class RecipeController extends Controller
     public function edit(Recipe $recipe)
     {
         $categories = Category::all();
+        $difficulties = DB::table('difficulty')->get();
         return view('recipe.edit', [
             'action' => route('recipe.update', $recipe->id),
             'method' => 'put',
             'model' => $recipe,
             'categories' => $categories,
+            'difficulties' => $difficulties,
         ]);
 
     }
@@ -93,10 +91,12 @@ class RecipeController extends Controller
     public function create()
     {
         $categories = Category::all();
+        $difficulties = DB::table('difficulty')->get();
         return view('recipe.create', [
             'action' => route('recipe.store'),
             'method' => 'post',
             'categories' => $categories,
+            'difficulties' => $difficulties,
         ]);
     }
 
@@ -113,6 +113,7 @@ class RecipeController extends Controller
             'category_id' => 'required',
             'difficulty' => 'required',
             'cooking_time' => 'required',
+            'description' => 'required'
         ]);
         $avatarName = null;
         if ($request->hasFile('image')) {
@@ -123,12 +124,14 @@ class RecipeController extends Controller
 
         $recipe = Recipe::create([
             'name' => $request->name,
+            'description' => $request->description,
             'ingredients' => $request->ingredients,
             'instructions' => $request->instructions,
             'image' => $avatarName,
             'category_id' => $request->category_id,
             'difficulty' => $request->difficulty,
             'cooking_time' => $request->cooking_time,
+            'video_url' => $request->video_url,
             'user_id' => Auth::user()->getAuthIdentifier(),
         ]);
 
@@ -140,9 +143,10 @@ class RecipeController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(Recipe $recipe)
     {
-        //
+        $difficulties = DB::table('difficulty')->get();
+        return view('recipe.show' ,['recipe' => $recipe, 'difficulties' => $difficulties]);
     }
 
     /**

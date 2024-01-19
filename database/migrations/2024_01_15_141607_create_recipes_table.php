@@ -15,14 +15,17 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->text('ingredients');
+            $table->text('description');
             $table->text('instructions');
             $table->string('image')->nullable();
             $table->unsignedBigInteger('category_id');
             $table->foreign('category_id')->references('id')->on('categories');
             $table->unsignedBigInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users');
-            $table->unsignedTinyInteger('difficulty');
+            $table->unsignedBigInteger('difficulty');
+            $table->foreign('difficulty')->references('id')->on('difficulty');
             $table->unsignedInteger('cooking_time');
+            $table->string('video_url')->nullable();
             $table->timestamps();
         });
     }
