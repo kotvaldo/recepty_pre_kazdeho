@@ -16,6 +16,7 @@
 
     <!-- CSS Files -->
     <link href="{{ asset('css/layout.css') }}" rel="stylesheet">
+    <link rel="icon" type="image/png" href="{{ asset('/images/kuchar.png') }}">
 
     <!-- Scripts -->
     @vite(['resources/sass/app.scss', 'resources/js/app.js'])
@@ -147,9 +148,6 @@
         </li>
         <li>
             <a href="{{route('privacy')}}">Súkromie</a>
-        </li>
-        <li>
-            <a href="{{route('contact')}}">Kontakt</a>
         </li>
     </ul>
     <p class="copyright">Recepty pre každého @ 2023</p>

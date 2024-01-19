@@ -39,11 +39,11 @@
     text-decoration: none;
 }
 .link:hover .card {
-    transform: scale(1.2);
+    transform: scale(1.1);
 }
 
 .highlighted-search {
-    border: 2px solid #000000;
+    border: 1px solid #000000;
     border-radius: 5px;
     width: 100%;
     transition: border-color 0.3s ease;
@@ -70,9 +70,5 @@
 }
 
 /* Štýly pre kontajner */
-.center-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh; /* Výška 100% viewportu (celého okna prehliadača) */
-}
+
+

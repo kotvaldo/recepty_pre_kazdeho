@@ -84,14 +84,5 @@ class HomeController extends Controller
         return view('home.privacy');
     }
 
-    public function contact()
-    {
-        return view('home.contact');
-    }
 
-    public function categories()
-    {
-        return view('home.categories');
-
-    }
 }

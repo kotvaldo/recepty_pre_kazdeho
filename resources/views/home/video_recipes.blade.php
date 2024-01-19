@@ -2,7 +2,9 @@
 
 @section('content')
     <link rel="stylesheet" href="{{ asset('css/all_recipes.css') }}">
-    <div class="container mt-5 searchbar">
+
+    <div class="container mt-5 searchbar text-center">
+        <h1 class="title-page">Video-recepty</h1>
         <div class="row">
             <div class="col-md-6 mx-auto">
                 <div class="form-outline highlighted-search" data-mdb-input-init>
