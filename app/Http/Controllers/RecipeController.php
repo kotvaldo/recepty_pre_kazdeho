@@ -9,7 +9,6 @@ use App\Models\Recipe;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
 use Mockery\Matcher\Ducktype;
 use SebastianBergmann\Diff\Diff;
 

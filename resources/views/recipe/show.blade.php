@@ -30,7 +30,7 @@
                         <div class="container video-title">
                             <h3>Video:</h3>
                         </div>
-                        <div class="video-container">
+                        <div class="">
                             <iframe id="youtubeVideoFrame" width="600" height="400"
                                     allowfullscreen></iframe>
                             <script>

@@ -42,10 +42,6 @@ h3 {
     margin-top: 20px;
 }
 
-.video-container:hover  {
-    transform: scale(1.2);
-}
-
 .video-title {
     margin-top: 50px;
 }

@@ -8,7 +8,7 @@
         <div class="row">
             <div class="col-md-6 mx-auto">
                 <div class="form-outline highlighted-search" data-mdb-input-init>
-                    <input type="search" id="form1" class="form-control" placeholder="Type query" aria-label="Search"/>
+                    <input type="search" id="form1" class="form-control" placeholder="Search..." aria-label="Search"/>
                 </div>
             </div>
         </div>
@@ -23,9 +23,7 @@
                                 class="card-img-top" src="{{ asset('images/' . $recipe->image) }}" alt="Recipe Image">
                             <div class="card-body">
                                 <h5 class="card-title">
-                                    {{ $recipe->name }}@if ($recipe->video_url)
-                                        <i class="fas fa-play"></i>
-                                    @endif
+                                    {{ $recipe->name }}
                                 </h5>
                                 <p class="card-text">{{ $recipe->description }}</p>
                             </div>
