@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use App\Models\Category;
+use App\Models\Difficulty;
 use App\Models\Recipe;
 use Illuminate\Database\Seeder;
 use App\Models\User;
@@ -31,7 +32,7 @@ class DatabaseSeeder extends Seeder
 
         ]);
 
-        DB::table('difficulty')->insert([
+        Difficulty::insert([
             ['name' => 'Ľahká'],
             ['name' => 'Stredná'],
             ['name' => 'Ťažká'],
@@ -55,6 +56,6 @@ class DatabaseSeeder extends Seeder
             ]);
         }
 
-        Recipe::factory(30)->create();
+        Recipe::factory(50)->create();
     }
 }

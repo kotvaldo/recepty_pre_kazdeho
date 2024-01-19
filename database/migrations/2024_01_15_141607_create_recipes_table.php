@@ -23,7 +23,7 @@ return new class extends Migration
             $table->unsignedBigInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users');
             $table->unsignedBigInteger('difficulty');
-            $table->foreign('difficulty')->references('id')->on('difficulty');
+            $table->foreign('difficulty')->references('id')->on('difficulties');
             $table->unsignedInteger('cooking_time');
             $table->string('video_url')->nullable();
             $table->timestamps();

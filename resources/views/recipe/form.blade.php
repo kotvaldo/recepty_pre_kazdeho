@@ -37,9 +37,7 @@
         <label for="category">Kategória<span style="color: red"> *</span></label>
         <select class="form-control" id="category_id" name="category_id">
             @foreach($categories as $category)
-                <option value="{{ $category->id }}" {{ old('category_id', @$model->category) == $category->id ? 'selected' : '' }}>
-                    {{ $category->name }}
-                </option>
+                <option value="{{ $category->id }}" {{ old('category_id', @$model->category_id) == $category->id ? 'selected' : '' }}>{{ $category->name }}</option>
             @endforeach
         </select>
     </div>
@@ -48,7 +46,7 @@
         <label for="difficulty">Obtiažnosť <span style="color: red">*</span></label>
         <select class="form-control" id="difficulty" name="difficulty">
             @foreach($difficulties as $difficulty)
-                <option value="{{ $difficulty->id }}">{{ $difficulty->name }}</option>
+                <option value="{{ $difficulty->id }}"{{ old('$difficulty', @$model->$difficulty) == $difficulty->id ? 'selected' : '' }}>{{ $difficulty->name }}</option>
             @endforeach
         </select>
     </div>

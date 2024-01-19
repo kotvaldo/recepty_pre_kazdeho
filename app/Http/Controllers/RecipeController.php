@@ -4,11 +4,14 @@ namespace App\Http\Controllers;
 
 use Aginev\Datagrid\Datagrid;
 use App\Models\Category;
+use App\Models\Difficulty;
 use App\Models\Recipe;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Mockery\Matcher\Ducktype;
+use SebastianBergmann\Diff\Diff;
 
 class RecipeController extends Controller
 {
@@ -54,8 +57,10 @@ class RecipeController extends Controller
             ->setColumn('difficulty', 'Difficulty', [
                 'sortable' => true,
                 'has_filters' => true,
+                'filters' => Difficulty::pluck('name', 'id')->toArray(),
                 'wrapper' => function ($value, $row) {
-                    return $row->difficulty->name ?? $value;
+                    $difficultyName = Difficulty::find($value)->name;
+                    return $difficultyName ?? $value;
                 }
             ])
             ->setColumn('cooking_time', 'Cooking time (minúty)', ['sortable' => true, 'has_filters' => true])
@@ -77,7 +82,7 @@ class RecipeController extends Controller
     public function edit(Recipe $recipe)
     {
         $categories = Category::all();
-        $difficulties = DB::table('difficulty')->get();
+        $difficulties = Difficulty::all();
         return view('recipe.edit', [
             'action' => route('recipe.update', $recipe->id),
             'method' => 'put',
@@ -91,7 +96,7 @@ class RecipeController extends Controller
     public function create()
     {
         $categories = Category::all();
-        $difficulties = DB::table('difficulty')->get();
+        $difficulties = Difficulty::all();
         return view('recipe.create', [
             'action' => route('recipe.store'),
             'method' => 'post',
@@ -145,7 +150,7 @@ class RecipeController extends Controller
      */
     public function show(Recipe $recipe)
     {
-        $difficulties = DB::table('difficulty')->get();
+        $difficulties = Difficulty::all();
         return view('recipe.show' ,['recipe' => $recipe, 'difficulties' => $difficulties]);
     }
 
